@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/manager',
     name: 'manager',
     component: Manager,
     children:[
@@ -25,7 +25,7 @@ const routes = [
     ]
   },
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     component: () => import('../pages/Login.vue')
   }
