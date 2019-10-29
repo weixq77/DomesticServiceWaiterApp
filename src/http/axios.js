@@ -16,9 +16,9 @@ axios.interceptors.response.use(function (response) {
     response.data = data.data;//数据
     response.status = data.status;//状态
     response.statusText = data.message;//返回信息
-    // 当状态码为500的时候，返回错误
-    if(data.status===500){
-        return Promise.reject(error);
+    // 统一异常处理
+    if(data.status!==200){
+        return Promise.reject(data.message);
     }
     return response;
 }, function (error) {

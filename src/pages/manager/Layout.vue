@@ -3,9 +3,9 @@
         <router-view></router-view>
         <div>
             <van-tabbar v-model="active" @change="tabChangeHandler">
-                <van-tabbar-item icon="wap-home-o" name="/home">首页</van-tabbar-item>
-                <van-tabbar-item icon="orders-o" name="/order">订单</van-tabbar-item>
-                <van-tabbar-item icon="user-o" name="/mine">我的</van-tabbar-item>
+                <van-tabbar-item icon="wap-home-o" name="home">首页</van-tabbar-item>
+                <van-tabbar-item icon="orders-o" name="order">订单</van-tabbar-item>
+                <van-tabbar-item icon="user-o" name="mine">我的</van-tabbar-item>
             </van-tabbar>
         </div>
     </div>
@@ -15,12 +15,16 @@
 export default {
     data(){
         return{
-            active:0
+            active:'mine'
         }
+    },
+    created(){
+        // 激活当前栏目
+        this.active = this.$route.query.name;
     },
     methods:{
         tabChangeHandler(path){
-            this.$router.push({path})
+            this.$router.push(path);
         }
     }
 }

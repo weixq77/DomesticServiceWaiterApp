@@ -10,12 +10,12 @@
                 round
                 width="10rem"
                 height="10rem"
-                src="https://img.yzcdn.cn/vant/cat.jpeg"
+                :src=infoUser.avatar
                 />
             </van-row>
             <br>
             <br>
-            <p id="name">{{name}}</p>
+            <p id="name">{{infoUser.name}}</p>
         </div>
         <br>
         <br>
@@ -28,11 +28,23 @@
 </template>
 
 <script>
+import {mapState,mapGetters,mapActions} from 'vuex'
 export default {
+    name:'mine',
     data(){
         return{
-            name:"先写死"
+            // waiterName:this.infoUser.name,
+            // waiterId:this.infoUser.id,
         }
+    },
+    created(){
+    },
+    computed:{
+        // 用户的信息(对象，存放有id，name，头像)
+        ...mapState('user',["infoUser"]),
+    },
+    methods:{
+        
     }
 }
 </script>

@@ -8,20 +8,21 @@ const routes = [
   {
     path: '/manager',
     name: 'manager',
+    redirect: '/manager/mine',//重定向
     component: Manager,
     children:[
       {
-      path: 'home',
-      component: () => import('../pages/manager/Home.vue')
+        path: 'home',
+        component: () => import('../pages/manager/Home.vue')
       },
       {
         path: 'order',
         component: () => import('../pages/manager/Order.vue')
-        },
-        {
-          path: 'mine',
-          component: () => import('../pages/manager/Mine.vue')
-          },
+      },
+      {
+        path: 'mine',
+        component: () => import('../pages/manager/Mine.vue')
+      },
     ]
   },
   {
