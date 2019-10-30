@@ -87,6 +87,11 @@
                             </div>
                         </van-panel>
                     </div>
+                    <div v-else-if="!( o.status==='待接单' || o.status==='待完成')" id="dqr_none">
+                        <van-image src="">
+                            <template v-slot:loading>加载失败</template>
+                        </van-image>
+                    </div>
                 </div>
             </van-tab>
             <!-- 已完成 -->
@@ -110,7 +115,9 @@
 </template>
 
 <script>
+import {Dialog} from 'vant'
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
+
 export default {
     data(){
         return{
@@ -158,15 +165,59 @@ export default {
         },
         // 待接单--拒绝订单
         refusedHandler(){
-            alert("拒绝");
+            // 异步操作订单--拒绝订单
+            function beforeClose(action,done){
+                // 当点击确认时
+                if(action === 'confirm'){
+                    setTimeout(done,1000)
+                }else{
+                    // 取消
+                    // console.log(done);
+                    done(console.log("我还不知道这里是返回什么的"));
+                }
+            };
+            // 弹框提醒
+            Dialog.confirm({
+                title: '订单操作',
+                message: '确认拒绝订单？',
+                beforeClose
+                });
         },
         // 待接单--接受订单
         acceptHandler(){
-            alert("接受")
+            // 异步操作订单--接受订单
+            function beforeClose(action,done){
+                if(action === 'confirm'){
+                    setTimeout(done,3000)
+                }else{
+                    // console.log(done);
+                    done(console.log("我还不知道这里是返回什么的"));
+                }
+            };
+            // 弹框提醒
+            Dialog.confirm({
+                title: '订单操作',
+                message: '确认接受订单？',
+                beforeClose
+                })
         },
         // 已接订单--确认完成
         completeHandler(){
-            alert("确认完成")
+            // 异步操作订单--确认完成订单
+            function beforeClose(action,done){
+                if(action === 'confirm'){
+                    setTimeout(done,3000)
+                }else{
+                    // console.log(done);
+                    done(console.log("我还不知道这里是返回什么的"));
+                }
+            };
+            // 弹框提醒
+            Dialog.confirm({
+                title: '订单操作',
+                message: '确认完成顾客订单要求',
+                beforeClose
+                })
         },
     }
 }
@@ -186,5 +237,8 @@ export default {
 #content_nr{
     padding: 2% 5%;
     font-size: 14px;
+}
+#dqr_none van-image .van-icon{
+    margin: 30% 20%;
 }
 </style>

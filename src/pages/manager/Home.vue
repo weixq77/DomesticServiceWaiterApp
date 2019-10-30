@@ -35,7 +35,7 @@
 
 <script>
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
-
+import {Dialog} from 'vant'
 export default {
     created(){
         // 激活当前数据
@@ -56,7 +56,7 @@ export default {
         ...mapGetters("order",["orderStatusFilter"])
     },
     methods:{
-        ...mapActions("order",["findAllOrders"]),
+        ...mapActions("order",["findAllOrders","beforeClose"]),
         // 根据登录id加载数据
         loadData(){
             this.findAllOrders(this.infoUser.id)
@@ -77,12 +77,41 @@ export default {
         },
         // 待接单--拒绝订单
         refusedHandler(){
-            alert("拒绝");
+            // 异步操作订单--拒绝订单
+            function beforeClose(action,done){
+                if(action === 'confirm'){
+                    setTimeout(done,1000)
+                }else{
+                    // console.log(done);
+                    done(console.log("我还不知道这里是返回什么的"));
+                }
+            };
+            // 弹框提醒
+           Dialog.confirm({
+                title: '订单操作',
+                message: '确认拒绝订单？',
+                beforeClose
+            })
         },
         // 待接单--接受订单
         acceptHandler(){
-            alert("接受")
+            // 异步操作订单--接受订单
+            function beforeClose(action,done){
+                if(action === 'confirm'){
+                    setTimeout(done,3000)
+                }else{
+                    // console.log(done);
+                    done(console.log("我还不知道这里是返回什么的"));
+                }
+            };
+            // 弹框提醒
+            Dialog.confirm({
+                title: '订单操作',
+                message: '确认接受订单？',
+                beforeClose
+            });
         }
+        
     }
 }
 </script>
