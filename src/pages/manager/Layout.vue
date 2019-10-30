@@ -20,11 +20,16 @@ export default {
     },
     created(){
         // 激活当前栏目
-        this.active = this.$route.query.name;
+        if(this.$route.query.name){
+            this.active = this.$route.query.name;
+        }else{
+            this.active = 'mine';
+        }
+        
     },
     methods:{
         tabChangeHandler(path){
-            this.$router.push(path);
+            this.$router.push("/"+path);
         }
     }
 }

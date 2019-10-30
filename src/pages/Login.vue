@@ -35,19 +35,27 @@ export default {
         return {
             loginForm:{
                 type:'waiter',
-                password:"123321",
-                username:"waiter1"
+                password:"",
+                username:""
             },
         }
+    },
+    created(){
+    //    console.log("username",localStorage.getItem('username'))
+       console.log("token",localStorage.getItem('token'))
     },
     methods:{
         ...mapActions("user",["login"]),
         // fun：登录函数
         loginHandler(){
+            // alert("登录")
             this.login(this.loginForm)
             .then(()=>{
+                // 登录成功的话本地浏览会话技术存储用户名和密码
+                localStorage.setItem('username', this.loginForm.username);
+                localStorage.setItem('password', this.loginForm.password);
                 // 登录成功跳转我的页面，传递name激活对应栏目
-                this.$router.push({path:"/manager", query:{name:"mine"}});
+                this.$router.push({path:"/", query:{name:"mine"}});
             })
             .catch((error)=>{
                 // 登录失败提示信息

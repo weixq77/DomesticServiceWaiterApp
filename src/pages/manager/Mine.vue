@@ -22,13 +22,13 @@
         <div id="main">
             <van-cell title="我的收入" is-link to="" />
             <van-cell title="我的订单" is-link to="" />
-            <van-cell title="退出" is-link to="/" />
+            <van-cell title="退出" is-link @click="userLogout" />
         </div>
     </div>
 </template>
 
 <script>
-import {mapState,mapGetters,mapActions} from 'vuex'
+import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
     name:'mine',
     data(){
@@ -38,13 +38,33 @@ export default {
         }
     },
     created(){
+        // 初始化
+        this.loadDate();
     },
     computed:{
         // 用户的信息(对象，存放有id，name，头像)
         ...mapState('user',["infoUser"]),
     },
     methods:{
-        
+        // 设置登录成功获取的员工信息
+        ...mapMutations('user',["setUser"]),
+        // 退出登录
+        ...mapActions('user',["logout"]),
+        // 普通函数
+        // fun:用户退出登录
+        userLogout(){
+            this.logout()
+            .then(()=>{
+                // 退出成功跳转回登录页面
+                this.$router.push({path:"/login"});
+            })
+        },
+        loadDate(){
+            // 跳转前已经判断过了本地是否有用户信息了，直接拿来设置即可
+            // 要先将字符转换为对象
+            this.setUser(JSON.parse(localStorage.getItem('infoUser')));
+            
+        }
     }
 }
 </script>
