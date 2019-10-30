@@ -42,7 +42,7 @@ export default {
     },
     created(){
     //    console.log("username",localStorage.getItem('username'))
-       console.log("token",localStorage.getItem('token'))
+    //    console.log("token",localStorage.getItem('token'))
     },
     methods:{
         ...mapActions("user",["login"]),
@@ -51,9 +51,6 @@ export default {
             // alert("登录")
             this.login(this.loginForm)
             .then(()=>{
-                // 登录成功的话本地浏览会话技术存储用户名和密码
-                localStorage.setItem('username', this.loginForm.username);
-                localStorage.setItem('password', this.loginForm.password);
                 // 登录成功跳转我的页面，传递name激活对应栏目
                 this.$router.push({path:"/", query:{name:"mine"}});
             })

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Manager from '../pages/manager/Layout.vue'
+import {isToken} from '@/utils/localStorage.js'
 
 Vue.use(VueRouter)
 
@@ -8,7 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'manager',
-    redirect: '/mine',//重定向
+    redirect: '/home',//重定向
     component: Manager,
     children:[
       {
@@ -41,26 +42,26 @@ const router = new VueRouter({
   routes
 })
 
-// 判断是否已经登录过了
-router.beforeEach((to,from,next) => {
-  // alert(1)
-  // 判断当前本地是否有token，有的话为已经登录了
-  if(localStorage.getItem('token')){
-    // alert(2)
-    // if(to.name == '')
-    // 已经登录过了，直接往下走
-    next();
-  }else{
-    // 没有登录
-    if (to.name === 'login') { // 如果是登录页面的话，直接往下走
-      next();
-    } else { // 否则 跳转到登录页面
-      next({
-        path: '/login'
-      });
-    }
-  }
+// // 判断是否已经登录过了
+// router.beforeEach((to,from,next) => {
+//   // alert(1)
+//   // 判断当前本地是否有token，有的话为已经登录了
+//   if(isToken){
+//     // alert(2)
+//     // if(to.name == '')
+//     // 已经登录过了，直接往下走
+//     next();
+//   }else{
+//     // 没有登录
+//     if (to.name === 'login') { // 如果是登录页面的话，直接往下走
+//       next();
+//     } else { // 否则 跳转到登录页面
+//       next({
+//         path: '/login'
+//       });
+//     }
+//   }
 
-})
+// })
 
 export default router

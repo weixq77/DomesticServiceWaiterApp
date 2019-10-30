@@ -38,16 +38,13 @@ export default {
         }
     },
     created(){
-        // 初始化
-        this.loadDate();
+        
     },
     computed:{
         // 用户的信息(对象，存放有id，name，头像)
         ...mapState('user',["infoUser"]),
     },
     methods:{
-        // 设置登录成功获取的员工信息
-        ...mapMutations('user',["setUser"]),
         // 退出登录
         ...mapActions('user',["logout"]),
         // 普通函数
@@ -59,12 +56,7 @@ export default {
                 this.$router.push({path:"/login"});
             })
         },
-        loadDate(){
-            // 跳转前已经判断过了本地是否有用户信息了，直接拿来设置即可
-            // 要先将字符转换为对象
-            this.setUser(JSON.parse(localStorage.getItem('infoUser')));
-            
-        }
+        
     }
 }
 </script>
