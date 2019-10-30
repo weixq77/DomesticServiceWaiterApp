@@ -7,9 +7,12 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path:'/',
+    redirect: '/manager/home',//重定向
+  },
+  {
+    path: '/manager',
     name: 'manager',
-    redirect: '/home',//重定向
     component: Manager,
     children:[
       {
@@ -42,26 +45,5 @@ const router = new VueRouter({
   routes
 })
 
-// // 判断是否已经登录过了
-// router.beforeEach((to,from,next) => {
-//   // alert(1)
-//   // 判断当前本地是否有token，有的话为已经登录了
-//   if(isToken){
-//     // alert(2)
-//     // if(to.name == '')
-//     // 已经登录过了，直接往下走
-//     next();
-//   }else{
-//     // 没有登录
-//     if (to.name === 'login') { // 如果是登录页面的话，直接往下走
-//       next();
-//     } else { // 否则 跳转到登录页面
-//       next({
-//         path: '/login'
-//       });
-//     }
-//   }
-
-// })
 
 export default router

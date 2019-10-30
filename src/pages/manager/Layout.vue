@@ -37,10 +37,10 @@ export default {
         
     },
     methods:{
-        // 获取用户信息
+        // 请求获取用户信息
         ...mapActions('user',['loginInfo']),
         tabChangeHandler(path){
-            this.$router.push({path:"/"+path});
+            this.$router.push({path:"/manager/"+path});
         }
     }
 }

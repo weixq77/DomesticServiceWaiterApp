@@ -41,18 +41,16 @@ export default {
         }
     },
     created(){
-    //    console.log("username",localStorage.getItem('username'))
-    //    console.log("token",localStorage.getItem('token'))
+   
     },
     methods:{
         ...mapActions("user",["login"]),
         // fun：登录函数
         loginHandler(){
-            // alert("登录")
             this.login(this.loginForm)
             .then(()=>{
                 // 登录成功跳转我的页面，传递name激活对应栏目
-                this.$router.push({path:"/", query:{name:"mine"}});
+                this.$router.push({path:"/manager/mine", query:{name:"mine"}});
             })
             .catch((error)=>{
                 // 登录失败提示信息

@@ -33,8 +33,7 @@ export default {
     name:'mine',
     data(){
         return{
-            // waiterName:this.infoUser.name,
-            // waiterId:this.infoUser.id,
+            
         }
     },
     created(){

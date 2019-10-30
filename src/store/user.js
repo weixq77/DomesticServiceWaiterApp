@@ -2,7 +2,7 @@ import {get,post_json,post_array} from '../http/axios'
 import {setToken,getToken,removeToken} from '@/utils/localStorage.js'
 export default{
     namespaced:true,
-    states:{
+    state:{
         token:getToken(),//维护token
         infoUser:{},//存放已登录的员工信息(id,name)
     },
@@ -11,12 +11,12 @@ export default{
     },
     mutations:{
         // 设置登录获取的员工id和name
-        setUser(states,info){
-            states.infoUser = info;
+        setUser(state,info){
+            state.infoUser = info;
         },
         // 刷新token
-        refreshToken(states,token){
-            states.token = token;
+        refreshToken(state,token){
+            state.token = token;
         }
     },
     actions:{
@@ -28,8 +28,6 @@ export default{
             setToken(response.data.token);
             // 设置token
             commit('refreshToken',response.data.token);
-            // 2.将获取token，再用token去拿用户的信息(必须先等获取了用户信息再返回，不然进入我的就拿不到数据)
-            // await dispatch('loginInfo',response.data)
 
             return response;
         },
@@ -47,7 +45,7 @@ export default{
             // 退出登录请求
             let response = await post_json("/user/logout");
 
-            // 将本地存储的账号密码清空
+            // 将本地存储的token清空
             removeToken();
 
             return response;

@@ -121,7 +121,13 @@ export default {
         }
     },
     created(){
-        this.loadData();
+       
+    },
+    watch:{
+        // 监听infoUser，当拿token去异步请求成功后infoUser被改变了再去查询员工的订单
+        infoUser: function(){
+            this.loadData();
+        }
     },
     computed:{
         ...mapState("order",["orders"]),
