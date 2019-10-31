@@ -5,7 +5,7 @@
             title="订单"
         />
         <!-- 标签页 -->
-        <van-tabs v-model="active">
+        <van-tabs v-model="active" >
             <!-- 所有订单 -->
             <van-tab title="所有订单">
                 <!-- 如果订单状态为已完成，显示已完成订单信息 -->
@@ -129,9 +129,7 @@
                     </div>
                 </div>                
                 <div v-else id="order_none">
-                    <van-image round width="100px" height="100px">
-                        <template v-slot:loading>暂无订单</template>
-                    </van-image>
+                    <img src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 已接订单 -->
@@ -161,9 +159,7 @@
                     </div>
                 </div>
                 <div v-else id="order_none">
-                    <van-image round width="100px" height="100px">
-                        <template v-slot:loading>暂无订单</template>
-                    </van-image>
+                    <img src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 待确认 -->
@@ -186,9 +182,7 @@
                     </div>
                 </div>
                 <div v-else id="order_none">
-                    <van-image round width="100px" height="100px">
-                        <template v-slot:loading>暂无订单</template>
-                    </van-image>
+                    <img src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 已完成 -->
@@ -210,9 +204,7 @@
                     </div>
                 </div>
                 <div v-else id="order_none">
-                    <van-image round width="100px" height="100px">
-                        <template v-slot:loading>暂无订单</template>
-                    </van-image>
+                    <img src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
         </van-tabs>
@@ -331,7 +323,7 @@ export default {
 
 <style scoped>
 #content{
-    padding: 5% 0%;
+    padding: 5% 0% 0%;
     border-top: 1px solid #ebedf0;
     border-bottom: 1px solid #ebedf0;
 }
@@ -345,10 +337,9 @@ export default {
     padding: 2% 5%;
     font-size: 14px;
 }
-#order_none{
-    width: 100px;
+#order_none img{
+    width: 100%;
     height: 100%;
-    margin-left: 37%;
-    margin-top: 10%;
+    border-radius: 10px;
 }
 </style>

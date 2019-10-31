@@ -20,8 +20,8 @@
         <br>
         <br>
         <div id="main">
-            <van-cell title="我的收入" is-link to="" />
-            <van-cell title="我的订单" is-link to="" />
+            <van-cell title="我的收入" is-link @click="toIncome" />
+            <van-cell title="我的订单" is-link @click="toOrderList" />
             <van-cell title="退出" is-link @click="userLogout" />
         </div>
     </div>
@@ -47,6 +47,16 @@ export default {
         // 退出登录
         ...mapActions('user',["logout"]),
         // 普通函数
+        // 查看我的收入
+        toIncome(){
+            // 跳转到我的收入页面
+            this.$router.push({path:"/manager/income"})
+        },
+        // 查看我的订单
+        toOrderList(){
+            // 跳转到我的订单页面
+            this.$router.push({path:"/manager/orderList"})
+        },
         // fun:用户退出登录
         userLogout(){
             this.logout()
