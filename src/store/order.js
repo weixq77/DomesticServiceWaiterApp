@@ -10,7 +10,7 @@ export default{
             // 统计订单个数
             return state.orders.length
         },
-        // 需要为获取器传递参数的写法
+        // 根据订单状态筛选订单
         orderStatusFilter(state){
             // 对订单的状态进行过滤
             return function(status){

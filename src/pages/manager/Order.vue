@@ -26,88 +26,112 @@
             <van-tab title="未接订单">
                 <!-- 遍历查询信息 -->
                 <!-- 将查询信息展示在面板 -->
-                <div v-for="o in orders" :key="o.id" >
-                    <div v-if="o.status === '待接单'">
-                        <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
-                            <div slot="default" id="content_nr">
-                                <ul>
-                                    <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
-                                    <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                    <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                </ul>
-                            </div>
-                            <div slot="footer">
-                                <van-row>
-                                    <van-col offset="16" span="16">
-                                        <van-button size="small" plain type="danger" @click="refusedHandler">拒绝</van-button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <van-button size="small" plain type="primary" @click="acceptHandler">接受</van-button>
-                                    </van-col>
-                                </van-row>
-                            </div>
-                        </van-panel>
+                <div v-if="orderStatusFilter('待接单').length!=0">
+                    <div v-for="o in orderStatusFilter('待接单')" :key="o.id" >
+                        <div>
+                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
+                                <div slot="default" id="content_nr">
+                                    <ul>
+                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
+                                        <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
+                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
+                                    </ul>
+                                </div>
+                                <div slot="footer">
+                                    <van-row>
+                                        <van-col offset="16" span="16">
+                                            <van-button size="small" plain type="danger" @click="refusedHandler">拒绝</van-button>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <van-button size="small" plain type="primary" @click="acceptHandler">接受</van-button>
+                                        </van-col>
+                                    </van-row>
+                                </div>
+                            </van-panel>
+                        </div>
                     </div>
+                </div>                
+                <div v-else id="order_none">
+                    <van-image round width="100px" height="100px">
+                        <template v-slot:loading>暂无订单</template>
+                    </van-image>
                 </div>
             </van-tab>
             <!-- 已接订单 -->
             <van-tab title="已接订单">
-                <div v-for="o in orders" :key="o.id">
-                    <div v-if="o.status === '待完成'">
-                        <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
-                            <div slot="default" id="content_nr">
-                                <ul>
-                                    <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
-                                    <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                    <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                </ul>
-                            </div>
-                            <div slot="footer">
-                                <van-row>
-                                    <van-col offset="20" span="20">
-                                        <van-button size="small" plain type="danger" @click="completeHandler">确认完成</van-button>
-                                    </van-col>
-                                </van-row>
-                            </div>
-                        </van-panel>
+                <!-- {{orderStatusFilter('待完成')}} -->
+                <div v-if="orderStatusFilter('待完成').length!=0">
+                    <div v-for="o in orderStatusFilter('待完成')" :key="o.id">
+                        <div>
+                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
+                                <div slot="default" id="content_nr">
+                                    <ul>
+                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
+                                        <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
+                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
+                                    </ul>
+                                </div>
+                                <div slot="footer">
+                                    <van-row>
+                                        <van-col offset="20" span="20">
+                                            <van-button size="small" plain type="danger" @click="completeHandler">确认完成</van-button>
+                                        </van-col>
+                                    </van-row>
+                                </div>
+                            </van-panel>
+                        </div>
                     </div>
+                </div>
+                <div v-else id="order_none">
+                    <van-image round width="100px" height="100px">
+                        <template v-slot:loading>暂无订单</template>
+                    </van-image>
                 </div>
             </van-tab>
             <!-- 待确认 -->
             <van-tab title="待确认">
-                <div v-for="o in orders" :key="o.id">
-                    <div v-if="o.status === '待确认'">
-                        <van-panel :title="o.customer.realname" :status="o.status">
-                            <!-- {{o.customer.realname}} -->
-                            <div slot="default" id="content_nr">
-                                <ul>
-                                    <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
-                                    <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                    <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                </ul>
-                            </div>
-                        </van-panel>
+                <div v-if="orderStatusFilter('待确认').length!=0">
+                    <div  v-for="o in orderStatusFilter('待确认')" :key="o.id">
+                        <div>
+                            <van-panel :title="o.customer.realname" :status="o.status">
+                                <!-- {{o.customer.realname}} -->
+                                <div slot="default" id="content_nr">
+                                    <ul>
+                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
+                                        <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
+                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
+                                    </ul>
+                                </div>
+                            </van-panel>
+                        </div>
                     </div>
-                    <div v-else-if="!( o.status==='待接单' || o.status==='待完成')" id="dqr_none">
-                        <van-image src="">
-                            <template v-slot:loading>加载失败</template>
-                        </van-image>
-                    </div>
+                </div>
+                <div v-else id="order_none">
+                    <van-image round width="100px" height="100px">
+                        <template v-slot:loading>暂无订单</template>
+                    </van-image>
                 </div>
             </van-tab>
             <!-- 已完成 -->
             <van-tab title="已完成">
-                <div v-for="o in orders" :key="o.id">
-                    <div v-if="o.status === '已完成'">
-                        <van-panel :title="o.customer.realname" :status="o.status">
-                            <div slot="default" id="content_nr">
-                                <ul>
-                                    <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
-                                    <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                    <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                </ul>
-                            </div>
-                        </van-panel>
+                <div v-if="orderStatusFilter('已完成').length!=0">
+                    <div  v-for="o in orderStatusFilter('已完成')" :key="o.id">
+                        <div>
+                            <van-panel :title="o.customer.realname" :status="o.status">
+                                <div slot="default" id="content_nr">
+                                    <ul>
+                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
+                                        <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
+                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
+                                    </ul>
+                                </div>
+                            </van-panel>
+                        </div>
                     </div>
+                </div>
+                <div v-else id="order_none">
+                    <van-image round width="100px" height="100px">
+                        <template v-slot:loading>暂无订单</template>
+                    </van-image>
                 </div>
             </van-tab>
         </van-tabs>
@@ -238,7 +262,10 @@ export default {
     padding: 2% 5%;
     font-size: 14px;
 }
-#dqr_none van-image .van-icon{
-    margin: 30% 20%;
+#order_none{
+    width: 100px;
+    height: 100%;
+    margin-left: 37%;
+    margin-top: 10%;
 }
 </style>
