@@ -29,6 +29,16 @@ const routes = [
         name:'mine',
         component: () => import('../pages/manager/Mine.vue')
       },
+      {
+        path: 'income',
+        name:'income',
+        component: () => import('../pages/manager/Income.vue')
+      },
+      {
+        path: 'orderList',
+        name:'orderList',
+        component: () => import('../pages/manager/OrderList.vue')
+      },
     ]
   },
   {
