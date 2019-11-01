@@ -8,26 +8,7 @@
         <van-tabs v-model="active" >
             <!-- 所有订单 -->
             <van-tab title="所有订单">
-                <!-- 如果订单状态为已完成，显示已完成订单信息 -->
-                <div v-if="orderStatusFilter('已完成').length!=0">
-                    <!-- 将查询信息传给面板展示订单信息 -->
-                    <div v-for="o in orderStatusFilter('已完成')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" >
-                                <!-- 订单相关信息 -->
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <!-- 订单服务金额、服务地址、及下单时间 -->
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                            </van-panel>
-                        </div>
-                    </div>
-                </div>
+                
                 <!-- 如果订单状态为待接单，显示待接单订单信息 -->
                 <div v-if="orderStatusFilter('待接单').length!=0">
                     <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="content">
@@ -44,9 +25,9 @@
                                 <div slot="footer">
                                     <van-row>
                                         <van-col offset="16" span="16">
-                                            <van-button size="small" plain type="danger" @click="refusedHandler">拒绝</van-button>
+                                            <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
                                             &nbsp;&nbsp;&nbsp;
-                                            <van-button size="small" plain type="primary" @click="acceptHandler">接受</van-button>
+                                            <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
                                         </van-col>
                                     </van-row>
                                 </div>
@@ -70,7 +51,7 @@
                                 <div slot="footer">
                                     <van-row>
                                         <van-col offset="20" span="20">
-                                            <van-button size="small" plain type="danger" @click="completeHandler">确认完成</van-button>
+                                            <van-button size="small" plain type="danger" @click="completeHandler(o.id)">确认完成</van-button>
                                         </van-col>
                                     </van-row>
                                 </div>
@@ -79,13 +60,33 @@
                     </div>
                 </div>
                 <!-- 否则显示待确认订单信息 -->
-                <div v-else>
+                <div v-if="orderStatusFilter('待确认').length!=0">
                     <!-- 将查询信息传给面板展示订单信息 -->
                     <div v-for="o in orderStatusFilter('待确认')" :key="o.id" id="content">
                         <div>
                             <van-panel :title="o.customer.realname" :status="o.status" >
                                 <div slot="default" id="content_nr">
                                     <ul>
+                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
+                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
+                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
+                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
+                                    </ul>
+                                </div>
+                            </van-panel>
+                        </div>
+                    </div>
+                </div>
+                <!-- 如果订单状态为已完成，显示已完成订单信息 -->
+                <div v-else>
+                    <!-- 将查询信息传给面板展示订单信息 -->
+                    <div v-for="o in orderStatusFilter('已完成')" :key="o.id" id="content">
+                        <div>
+                            <van-panel :title="o.customer.realname" :status="o.status" >
+                                <!-- 订单相关信息 -->
+                                <div slot="default" id="content_nr">
+                                    <ul>
+                                        <!-- 订单服务金额、服务地址、及下单时间 -->
                                         <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
                                         <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
                                         <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
@@ -118,9 +119,9 @@
                                 <div slot="footer">
                                     <van-row>
                                         <van-col offset="16" span="16">
-                                            <van-button size="small" plain type="danger" @click="refusedHandler">拒绝</van-button>
+                                            <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
                                             &nbsp;&nbsp;&nbsp;
-                                            <van-button size="small" plain type="primary" @click="acceptHandler">接受</van-button>
+                                            <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
                                         </van-col>
                                     </van-row>
                                 </div>
@@ -135,8 +136,8 @@
             <!-- 已接订单 -->
             <van-tab title="已接订单">
                 <!-- {{orderStatusFilter('待完成')}} -->
-                <div v-if="orderStatusFilter('待完成').length!=0">
-                    <div v-for="o in orderStatusFilter('待完成')" :key="o.id" id="content">
+                <div v-if="orderStatusFilter('待服务').length!=0">
+                    <div v-for="o in orderStatusFilter('待服务')" :key="o.id" id="content">
                         <div>
                             <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
                                 <div slot="default" id="content_nr">
@@ -150,7 +151,7 @@
                                 <div slot="footer">
                                     <van-row>
                                         <van-col offset="20" span="20">
-                                            <van-button size="small" plain type="danger" @click="completeHandler">确认完成</van-button>
+                                            <van-button size="small" plain type="danger" @click="completeHandler(o.id)">确认完成</van-button>
                                         </van-col>
                                     </van-row>
                                 </div>
@@ -241,7 +242,7 @@ export default {
         ...mapGetters("order",["orderStatusFilter"])
     },
     methods:{
-        ...mapActions("order",["findAllOrders"]),
+        ...mapActions("order",["findAllOrders","refusedOrder","acceptOrder","completeOrder"]),
         // 根据登录id加载数据
         loadData(){
             this.findAllOrders(this.infoUser.id)
@@ -261,61 +262,45 @@ export default {
             return '';
         },
         // 待接单--拒绝订单
-        refusedHandler(){
-            // 异步操作订单--拒绝订单
-            function beforeClose(action,done){
-                // 当点击确认时
-                if(action === 'confirm'){
-                    // 
-                    setTimeout(done,1000)
-                }else{
-                    // 取消
-                    // console.log(done);
-                    done(console.log("我还不知道这里是返回什么的"));
-                }
-            };
+        refusedHandler(id){
             // 弹框提醒
             Dialog.confirm({
                 title: '订单操作',
-                message: '确认拒绝订单？',
-                beforeClose
+                message: '是否确认拒绝订单？'
+                }).then(() => {
+                    // 确认接受订单
+                    this.refusedOrder(id);
+                }).catch(() => {
+                    // on cancel
+                    
                 });
         },
         // 待接单--接受订单
-        acceptHandler(){
-            // 异步操作订单--接受订单
-            function beforeClose(action,done){
-                if(action === 'confirm'){
-                    setTimeout(done,3000)
-                }else{
-                    // console.log(done);
-                    done(console.log("我还不知道这里是返回什么的"));
-                }
-            };
+        acceptHandler(id){
             // 弹框提醒
             Dialog.confirm({
                 title: '订单操作',
-                message: '确认接受订单？',
-                beforeClose
-                })
+                message: '是否确认接受订单？'
+                }).then(() => {
+                    // 确认接受订单
+                    this.acceptOrder(id);
+                }).catch(() => {
+                    // on cancel
+                    
+                });
         },
         // 已接订单--确认完成
-        completeHandler(){
-            // 异步操作订单--确认完成订单
-            function beforeClose(action,done){
-                if(action === 'confirm'){
-                    setTimeout(done,3000)
-                }else{
-                    // console.log(done);
-                    done(console.log("我还不知道这里是返回什么的"));
-                }
-            };
+        completeHandler(id){
             // 弹框提醒
             Dialog.confirm({
                 title: '订单操作',
-                message: '确认完成顾客订单要求',
-                beforeClose
-                })
+                message: '是否确认完成订单？'
+                }).then(() => {
+                    // 确认接受订单
+                    this.completeOrder(id);
+                }).catch(() => {
+                    // on cancel   
+                });
         },
     }
 }

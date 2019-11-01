@@ -8,8 +8,8 @@
         <van-row>
             <img src="./images/首页1.jpg" width="100%">
         </van-row>
-        <div v-for="o in orders" :key="o.id" id="djd">
-            <div v-if="o.status === '待接单'">
+        <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="djd">
+            <div v-if="orderStatusFilter('待接单')">
                 <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
                     <div slot="default" id="content_nr">
                         <ul>
@@ -21,9 +21,9 @@
                     <div slot="footer">
                         <van-row>
                             <van-col offset="16" span="16">
-                                <van-button size="small" plain type="danger" @click="refusedHandler">拒绝</van-button>
+                                <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
                                 &nbsp;&nbsp;&nbsp;
-                                <van-button size="small" plain type="primary" @click="acceptHandler">接受</van-button>
+                                <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
                             </van-col>
                         </van-row>
                     </div>
@@ -56,7 +56,7 @@ export default {
         ...mapGetters("order",["orderStatusFilter"])
     },
     methods:{
-        ...mapActions("order",["findAllOrders","beforeClose"]),
+        ...mapActions("order",["findAllOrders","refusedOrder","acceptOrder"]),
         // 根据登录id加载数据
         loadData(){
             this.findAllOrders(this.infoUser.id)
@@ -76,40 +76,33 @@ export default {
             return '';
         },
         // 待接单--拒绝订单
-        refusedHandler(){
-            // 异步操作订单--拒绝订单
-            function beforeClose(action,done){
-                if(action === 'confirm'){
-                    setTimeout(done,1000)
-                }else{
-                    // console.log(done);
-                    done(console.log("我还不知道这里是返回什么的"));
-                }
-            };
-            // 弹框提醒
-           Dialog.confirm({
-                title: '订单操作',
-                message: '确认拒绝订单？',
-                beforeClose
-            })
-        },
-        // 待接单--接受订单
-        acceptHandler(){
-            // 异步操作订单--接受订单
-            function beforeClose(action,done){
-                if(action === 'confirm'){
-                    setTimeout(done,3000)
-                }else{
-                    // console.log(done);
-                    done(console.log("我还不知道这里是返回什么的"));
-                }
-            };
+        refusedHandler(id){
             // 弹框提醒
             Dialog.confirm({
                 title: '订单操作',
-                message: '确认接受订单？',
-                beforeClose
-            });
+                message: '是否确认接受订单？'
+                }).then(() => {
+                    // 确认接受订单
+                    this.refusedOrder(id);
+                }).catch(() => {
+                    // on cancel
+                    
+                });
+        },
+        // 待接单--接受订单
+        acceptHandler(id){
+            // this.acceptOrder(id);
+            // 弹框提醒
+            Dialog.confirm({
+                title: '订单操作',
+                message: '是否确认接受订单？'
+                }).then(() => {
+                    // 确认接受订单
+                    this.acceptOrder(id);
+                }).catch(() => {
+                    // on cancel
+
+                });
         }
         
     }
