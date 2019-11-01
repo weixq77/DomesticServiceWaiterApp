@@ -36,8 +36,8 @@
                     </div>
                 </div>
                 <!-- 如果订单状态为待完成，显示待完成订单信息 -->
-                <div v-if="orderStatusFilter('待完成').length!=0">
-                    <div v-for="o in orderStatusFilter" :key="o.id" id="content">
+                <div v-if="orderStatusFilter('待服务').length!=0">
+                    <div v-for="o in orderStatusFilter('待服务')" :key="o.id" id="content">
                         <div>
                             <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
                                 <div slot="default" id="content_nr">
