@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Manager from '../pages/manager/Layout.vue'
-import {isToken} from '@/utils/localStorage.js'
 
 Vue.use(VueRouter)
 
