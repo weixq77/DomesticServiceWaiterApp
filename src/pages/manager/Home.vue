@@ -1,34 +1,22 @@
 <template>
-    <div class="home">
+    <div id="home">
         <!-- 顶部提示 -->
         <van-nav-bar 
             title="首页"
+            fixed
         />
         <!-- 顶部加载图片 -->
-        <van-row>
-            <img src="./images/首页1.jpg" width="100%">
-        </van-row>
+        <van-row> 
+            <van-swipe :autoplay="3000" indicator-color="white" class="banner">
+                <van-swipe-item ><img src="./images/首页1.jpg"></van-swipe-item>
+                <van-swipe-item><img src="./images/首页2.jpg"></van-swipe-item>
+                <van-swipe-item><img src="./images/首页3.jpg"></van-swipe-item>
+                <van-swipe-item><img src="./images/首页4.jpg"></van-swipe-item>
+            </van-swipe>
+        </van-row> 
+
         <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="djd">
-            <div v-if="orderStatusFilter('待接单')">
-                <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
-                    <div slot="default" id="content_nr">
-                        <ul>
-                            <li> <van-icon name="balance-pay" size="mini"></van-icon> 总额: {{o.total}}</li>
-                            <li> <van-icon name="location-o" size="mini"></van-icon> 地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                            <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                        </ul>
-                    </div>
-                    <div slot="footer">
-                        <van-row>
-                            <van-col offset="16" span="16">
-                                <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
-                                &nbsp;&nbsp;&nbsp;
-                                <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
-                            </van-col>
-                        </van-row>
-                    </div>
-                </van-panel>
-            </div>
+            <vicki-cardOrderAccept :data=o></vicki-cardOrderAccept>
         </div>
     </div>
 </template>
@@ -37,6 +25,7 @@
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 import {Dialog} from 'vant'
 export default {
+    name:'home',
     created(){
         // 激活当前数据
        this.loadData();
@@ -110,7 +99,13 @@ export default {
 </script>
 
 <style scoped>
-#djd{
+.banner img{
+    height: 170px;
+}
+img{
+    width: 100%;
+}
+/* #djd{
     margin-top: 5%;
     border: 1px solid #ebedf0;
 }
@@ -127,5 +122,5 @@ export default {
 #content_nr{
     padding: 2% 5%;
     font-size: 14px;
-}
+} */
 </style>

@@ -3,99 +3,32 @@
         <!-- 顶部提示 -->
         <van-nav-bar 
             title="订单"
+            fixed
         />
         <!-- 标签页 -->
-        <van-tabs v-model="active" >
+        <van-tabs v-model="active"  swipeable :offset-top="46" sticky>
             <!-- 所有订单 -->
             <van-tab title="所有订单">
                 
                 <!-- 如果订单状态为待接单，显示待接单订单信息 -->
-                <div v-if="orderStatusFilter('待接单').length!=0">
-                    <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                                <div slot="footer">
-                                    <van-row>
-                                        <van-col offset="16" span="16">
-                                            <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
-                                            &nbsp;&nbsp;&nbsp;
-                                            <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
-                                        </van-col>
-                                    </van-row>
-                                </div>
-                            </van-panel>
-                        </div>
-                    </div>
+                <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="content">
+                    <vicki-cardOrderAccept :data=o></vicki-cardOrderAccept>
                 </div>
+               
                 <!-- 如果订单状态为待完成，显示待完成订单信息 -->
-                <div v-if="orderStatusFilter('待服务').length!=0">
-                    <div v-for="o in orderStatusFilter('待服务')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                                <div slot="footer">
-                                    <van-row>
-                                        <van-col offset="20" span="20">
-                                            <van-button size="small" plain type="danger" @click="completeHandler(o.id)">确认完成</van-button>
-                                        </van-col>
-                                    </van-row>
-                                </div>
-                            </van-panel>
-                        </div>
-                    </div>
+                <div v-for="o in orderStatusFilter('待服务')" :key="o.id" id="content">
+                    <vicki-cardOrderComfirm :data=o></vicki-cardOrderComfirm>
                 </div>
+                
                 <!-- 否则显示待确认订单信息 -->
-                <div v-if="orderStatusFilter('待确认').length!=0">
-                    <!-- 将查询信息传给面板展示订单信息 -->
-                    <div v-for="o in orderStatusFilter('待确认')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" >
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                            </van-panel>
-                        </div>
-                    </div>
+                <div v-for="o in orderStatusFilter('待确认')" :key="o.id" id="content">
+                    <vicki-cardOrder :data=o></vicki-cardOrder>
                 </div>
+               
                 <!-- 如果订单状态为已完成，显示已完成订单信息 -->
-                <div v-else>
                     <!-- 将查询信息传给面板展示订单信息 -->
-                    <div v-for="o in orderStatusFilter('已完成')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" >
-                                <!-- 订单相关信息 -->
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <!-- 订单服务金额、服务地址、及下单时间 -->
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                            </van-panel>
-                        </div>
-                    </div>
+                <div v-for="o in orderStatusFilter('已完成')" :key="o.id" id="content">
+                    <vicki-cardOrder :data=o></vicki-cardOrder>
                 </div>
                 
             </van-tab>
@@ -106,27 +39,7 @@
                 <!-- 将查询信息展示在面板 -->
                 <div v-if="orderStatusFilter('待接单').length!=0">
                     <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id" >
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                                <div slot="footer">
-                                    <van-row>
-                                        <van-col offset="16" span="16">
-                                            <van-button size="small" plain type="danger" @click="refusedHandler(o.id)">拒绝</van-button>
-                                            &nbsp;&nbsp;&nbsp;
-                                            <van-button size="small" plain type="primary" @click="acceptHandler(o.id)">接受</van-button>
-                                        </van-col>
-                                    </van-row>
-                                </div>
-                            </van-panel>
-                        </div>
+                        <vicki-cardOrderAccept :data=o></vicki-cardOrderAccept>
                     </div>
                 </div>                
                 <div v-else id="order_none">
@@ -135,28 +48,9 @@
             </van-tab>
             <!-- 已接订单 -->
             <van-tab title="已接订单">
-                <!-- {{orderStatusFilter('待完成')}} -->
                 <div v-if="orderStatusFilter('待服务').length!=0">
                     <div v-for="o in orderStatusFilter('待服务')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status" :key="o.id">
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                                <div slot="footer">
-                                    <van-row>
-                                        <van-col offset="20" span="20">
-                                            <van-button size="small" plain type="danger" @click="completeHandler(o.id)">确认完成</van-button>
-                                        </van-col>
-                                    </van-row>
-                                </div>
-                            </van-panel>
-                        </div>
+                        <vicki-cardOrderComfirm :data=o></vicki-cardOrderComfirm>
                     </div>
                 </div>
                 <div v-else id="order_none">
@@ -167,19 +61,7 @@
             <van-tab title="待确认">
                 <div v-if="orderStatusFilter('待确认').length!=0">
                     <div  v-for="o in orderStatusFilter('待确认')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status">
-                                <!-- {{o.customer.realname}} -->
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                            </van-panel>
-                        </div>
+                        <vicki-cardOrder :data=o></vicki-cardOrder>
                     </div>
                 </div>
                 <div v-else id="order_none">
@@ -190,18 +72,7 @@
             <van-tab title="已完成">
                 <div v-if="orderStatusFilter('已完成').length!=0">
                     <div  v-for="o in orderStatusFilter('已完成')" :key="o.id" id="content">
-                        <div>
-                            <van-panel :title="o.customer.realname" :status="o.status">
-                                <div slot="default" id="content_nr">
-                                    <ul>
-                                        <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{o.total}}</li>
-                                        <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{o.address.province + o.address.city + o.address.area + o.address.address}}</li>
-                                        <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{o.customer.telephone}}</li>
-                                        <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(o.orderTime)}}</li>
-                                    </ul>
-                                </div>
-                            </van-panel>
-                        </div>
+                        <vicki-cardOrder :data=o></vicki-cardOrder>
                     </div>
                 </div>
                 <div v-else id="order_none">
@@ -307,8 +178,8 @@ export default {
 </script>
 
 <style scoped>
-#content{
-    padding: 5% 0% 0%;
+/*#content{
+     padding: 5% 0% 0%; 
     border-top: 1px solid #ebedf0;
     border-bottom: 1px solid #ebedf0;
 }
@@ -326,5 +197,5 @@ export default {
     width: 100%;
     height: 100%;
     border-radius: 10px;
-}
+}*/
 </style>

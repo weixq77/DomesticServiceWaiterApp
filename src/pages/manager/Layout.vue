@@ -1,5 +1,5 @@
 <template>
-    <div class="layout">
+    <div id="layout">
         <router-view></router-view>
         <div>
             <van-tabbar v-model="active" @change="tabChangeHandler">
@@ -15,6 +15,7 @@
 import {isToken,getToken} from '@/utils/localStorage.js'
 import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
+    name:'layout',
     data(){
         return{
             active:'home'
