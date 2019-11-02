@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Manager from '../pages/manager/Layout.vue'
+import {getToken} from '../utils/localStorage.js'
+import store from '../store'
+import {Toast} from 'vant'
 
 Vue.use(VueRouter)
 
@@ -13,6 +16,22 @@ const routes = [
     path: '/manager',
     name: 'manager',
     component: Manager,
+    beforeEnter: (to,from,next) =>{
+      // 获取本地token
+      let token = getToken();
+      if(token){
+        // 查询info
+        store.dispatch('user/loginInfo',token)
+        .then(()=>{
+          // 当获取用户信息的时候才允许跳转
+          next();
+        })
+      }else{
+        Toast("请先登录")
+        // 跳转到登录
+        next({path:"/login"})
+      }
+    },
     children:[
       {
         path: 'home',

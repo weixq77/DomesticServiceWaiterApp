@@ -15,7 +15,7 @@
             </van-swipe>
         </van-row> 
 
-        <div v-for="o in orderStatusFilter('待接单')" :key="o.id" id="djd">
+        <div v-for="o in orderStatusFilter('待接单')" :key="o.id">
             <vicki-cardOrderAccept :data=o></vicki-cardOrderAccept>
         </div>
     </div>
@@ -45,53 +45,10 @@ export default {
         ...mapGetters("order",["orderStatusFilter"])
     },
     methods:{
-        ...mapActions("order",["findAllOrders","refusedOrder","acceptOrder"]),
+        // ...mapActions("order",["findAllOrders","refusedOrder","acceptOrder"]),
         // 根据登录id加载数据
         loadData(){
-            this.findAllOrders(this.infoUser.id)
-        },
-        // 时间转换
-        timestampToTime(datetime){
-            if(datetime){
-                datetime = new Date(datetime);
-                let y = datetime.getFullYear() + '-';
-                let mon = datetime.getMonth()+1 + '-';
-                let d = datetime.getDate() + ' ';
-                let h = datetime.getHours() + ':';
-                let m = datetime.getMinutes() + ':';
-                let s = datetime.getSeconds();
-                return y + mon + d + h + m + s
-            }
-            return '';
-        },
-        // 待接单--拒绝订单
-        refusedHandler(id){
-            // 弹框提醒
-            Dialog.confirm({
-                title: '订单操作',
-                message: '是否确认接受订单？'
-                }).then(() => {
-                    // 确认接受订单
-                    this.refusedOrder(id);
-                }).catch(() => {
-                    // on cancel
-                    
-                });
-        },
-        // 待接单--接受订单
-        acceptHandler(id){
-            // this.acceptOrder(id);
-            // 弹框提醒
-            Dialog.confirm({
-                title: '订单操作',
-                message: '是否确认接受订单？'
-                }).then(() => {
-                    // 确认接受订单
-                    this.acceptOrder(id);
-                }).catch(() => {
-                    // on cancel
-
-                });
+            // this.findAllOrders(this.infoUser.id)
         }
         
     }
@@ -105,22 +62,4 @@ export default {
 img{
     width: 100%;
 }
-/* #djd{
-    margin-top: 5%;
-    border: 1px solid #ebedf0;
-}
-#content{
-    padding: 4% 0%;
-    border-top: 1px solid #ebedf0;
-}
-
-.van-cell{
-    padding: 0% 5%;
-    font-size: 16px;
-    line-height: 1.7em;
-}
-#content_nr{
-    padding: 2% 5%;
-    font-size: 14px;
-} */
 </style>

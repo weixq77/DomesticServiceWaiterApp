@@ -50,7 +50,7 @@ export default {
             this.login(this.loginForm)
             .then(()=>{
                 // 登录成功跳转我的页面，传递name激活对应栏目
-                this.$router.push({path:"/manager/mine", query:{name:"mine"}});
+                this.$router.push({path:"/"});
             })
             .catch((error)=>{
                 // 登录失败提示信息

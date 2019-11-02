@@ -98,12 +98,6 @@ export default {
         // 激活当前数据
        this.loadData();
     },
-    watch:{
-        // 监听infoUser，当拿token去异步请求成功后infoUser被改变了再去查询员工的订单
-        infoUser: function(){
-            this.loadData();
-        }
-    },
     computed:{
         // 订单所有信息
         ...mapState("order",["orders"]),
@@ -113,89 +107,15 @@ export default {
         ...mapGetters("order",["orderStatusFilter"])
     },
     methods:{
-        ...mapActions("order",["findAllOrders","refusedOrder","acceptOrder","completeOrder"]),
+        ...mapActions("order",["findAllOrders"]),
         // 根据登录id加载数据
         loadData(){
             this.findAllOrders(this.infoUser.id)
-        },
-        // 时间转换
-        timestampToTime(datetime){
-            if(datetime){
-                datetime = new Date(datetime);
-                let y = datetime.getFullYear() + '-';
-                let mon = datetime.getMonth()+1 + '-';
-                let d = datetime.getDate() + ' ';
-                let h = datetime.getHours() + ':';
-                let m = datetime.getMinutes() + ':';
-                let s = datetime.getSeconds();
-                return y + mon + d + h + m + s
-            }
-            return '';
-        },
-        // 待接单--拒绝订单
-        refusedHandler(id){
-            // 弹框提醒
-            Dialog.confirm({
-                title: '订单操作',
-                message: '是否确认拒绝订单？'
-                }).then(() => {
-                    // 确认接受订单
-                    this.refusedOrder(id);
-                }).catch(() => {
-                    // on cancel
-                    
-                });
-        },
-        // 待接单--接受订单
-        acceptHandler(id){
-            // 弹框提醒
-            Dialog.confirm({
-                title: '订单操作',
-                message: '是否确认接受订单？'
-                }).then(() => {
-                    // 确认接受订单
-                    this.acceptOrder(id);
-                }).catch(() => {
-                    // on cancel
-                    
-                });
-        },
-        // 已接订单--确认完成
-        completeHandler(id){
-            // 弹框提醒
-            Dialog.confirm({
-                title: '订单操作',
-                message: '是否确认完成订单？'
-                }).then(() => {
-                    // 确认接受订单
-                    this.completeOrder(id);
-                }).catch(() => {
-                    // on cancel   
-                });
-        },
+        }
     }
 }
 </script>
 
 <style scoped>
-/*#content{
-     padding: 5% 0% 0%; 
-    border-top: 1px solid #ebedf0;
-    border-bottom: 1px solid #ebedf0;
-}
 
-.van-cell{
-    padding: 0% 5%;
-    font-size: 16px;
-    line-height: 1.7em;
-}
-#content_nr{
-    padding: 2% 5%;
-    font-size: 14px;
-}
-#order_none img{
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}*/
 </style>

@@ -6,7 +6,7 @@
                 <li> <van-icon name="balance-pay" size="mini"></van-icon> 订单总额: {{data.total}}</li>
                 <li> <van-icon name="location-o" size="mini"></van-icon> 服务地址: {{data.address.province + data.address.city + data.address.area + data.address.address}}</li>
                 <li> <van-icon name="phone-o" size="mini"></van-icon> 联系方式: {{data.customer.telephone}}</li>
-                <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{timestampToTime(data.orderTime)}}</li>
+                <li> <van-icon name="clock-o" size="mini"></van-icon> 下单时间: {{data.orderTime | datefmt}}</li>
             </ul>
         </div>
         <div slot="footer">
@@ -30,20 +30,6 @@ export default {
     },
     methods:{
         ...mapActions("order",["completeOrder"]),
-        // 时间转换
-        timestampToTime(datetime){
-            if(datetime){
-                datetime = new Date(datetime);
-                let y = datetime.getFullYear() + '-';
-                let mon = datetime.getMonth()+1 + '-';
-                let d = datetime.getDate() + ' ';
-                let h = datetime.getHours() + ':';
-                let m = datetime.getMinutes() + ':';
-                let s = datetime.getSeconds();
-                return y + mon + d + h + m + s
-            }
-            return '';
-        },
         // 已接订单--确认完成
         completeHandler(id){
             // 弹框提醒
