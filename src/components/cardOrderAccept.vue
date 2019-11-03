@@ -3,8 +3,8 @@
     <van-panel  :key="data.id" >
          <div slot="header" class="cardTop">
             <van-row>
-                <van-col span="8">订单编号：{{data.id}}</van-col>
-                <van-col offset="12" span="4"><span style="color:red">{{data.status}}</span></van-col>
+                <van-col span="9">订单编号：{{data.id}}</van-col>
+                <van-col offset="11" span="4"><span style="color:red">{{data.status}}</span></van-col>
             </van-row>
         </div>
         <div slot="default" id="content_nr">
