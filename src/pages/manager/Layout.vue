@@ -1,7 +1,7 @@
 <template>
     <div id="layout">
         <router-view></router-view>
-        <div>
+        <div class="tabbar_layout">
             <van-tabbar v-model="active" router>
                 <van-tabbar-item icon="wap-home-o" to="/manager/home">首页</van-tabbar-item>
                 <van-tabbar-item icon="orders-o" to="/manager/order">订单</van-tabbar-item>
@@ -43,5 +43,11 @@ export default {
 </script>
 
 <style scoped>
+.tabbar_layout::before{
+    content: "";
+    clear: both;
+    display: block;
+    height: 50px;
+}
 
 </style>

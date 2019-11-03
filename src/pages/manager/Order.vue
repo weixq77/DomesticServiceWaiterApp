@@ -1,12 +1,11 @@
 <template>
     <div class="order">
         <!-- 顶部提示 -->
-        <van-nav-bar 
-            title="订单"
-            fixed
-        />
+        <div class="orderTab">
+            <van-nav-bar title="订单" fixed/>
+        </div>
         <!-- 标签页 -->
-        <van-tabs v-model="active"  swipeable :offset-top="46" sticky>
+        <van-tabs class="orderContent" v-model="active"  swipeable :offset-top="46" sticky>
             <!-- 所有订单 -->
             <van-tab title="所有订单">
                 
@@ -42,8 +41,8 @@
                         <vicki-cardOrderAccept :data=o></vicki-cardOrderAccept>
                     </div>
                 </div>                
-                <div v-else id="order_none">
-                    <img src="./images/tips.jpg" alt="">
+                <div v-else id="order_none" style="width:100%;height:100%">
+                    <img style="width:100%;height:100%" src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 已接订单 -->
@@ -53,8 +52,8 @@
                         <vicki-cardOrderComfirm :data=o></vicki-cardOrderComfirm>
                     </div>
                 </div>
-                <div v-else id="order_none">
-                    <img src="./images/tips.jpg" alt="">
+                <div v-else id="order_none" style="width:100%;height:100%">
+                    <img style="width:100%;height:100%" src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 待确认 -->
@@ -64,8 +63,8 @@
                         <vicki-cardOrder :data=o></vicki-cardOrder>
                     </div>
                 </div>
-                <div v-else id="order_none">
-                    <img src="./images/tips.jpg" alt="">
+                <div v-else id="order_none" style="width:100%;height:100%">
+                    <img style="width:100%;height:100%" src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
             <!-- 已完成 -->
@@ -75,8 +74,8 @@
                         <vicki-cardOrder :data=o></vicki-cardOrder>
                     </div>
                 </div>
-                <div v-else id="order_none">
-                    <img src="./images/tips.jpg" alt="">
+                <div v-else id="order_none" style="width:100%;height:100%">
+                    <img style="width:100%;height:100%" src="./images/tips.jpg" alt="">
                 </div>
             </van-tab>
         </van-tabs>
@@ -117,5 +116,7 @@ export default {
 </script>
 
 <style scoped>
-
+.orderTab{
+    height: 50px;
+}
 </style>

@@ -1,10 +1,9 @@
 <template>
     <div id="home">
         <!-- 顶部提示 -->
-        <van-nav-bar 
-            title="首页"
-            fixed
-        />
+         <div class="orderTab">
+            <van-nav-bar title="首页" fixed/>
+        </div>
         <!-- 顶部加载图片 -->
         <van-row> 
             <van-swipe :autoplay="3000" indicator-color="white" class="banner">
@@ -29,12 +28,6 @@ export default {
     created(){
         // 激活当前数据
        this.loadData();
-    },
-    watch:{
-        // 监听infoUser，当拿token去异步请求成功后infoUser被改变了再去查询员工的订单
-        infoUser: function(){
-            this.loadData();
-        }
     },
     computed:{
         // 订单所有信息
@@ -61,5 +54,8 @@ export default {
 }
 img{
     width: 100%;
+}
+.orderTab{
+    height: 50px;
 }
 </style>
